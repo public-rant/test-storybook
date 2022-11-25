@@ -34,8 +34,8 @@ jobs:
     needs: scheduler
     runs-on: ubuntu-latest
     strategy:
-      matrix:
-        tweet_file: ${{ fromJSON(needs.scheduler.outputs.matrix) }}
+      # tweet_file: ${{ fromJSON(needs.scheduler.outputs.matrix) }}
+      matrix: ${{ fromJSON(needs.job1.outputs.matrix) }}
     steps:
       - name: Tweet
         uses: twitter-together/action@v2
