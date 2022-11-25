@@ -1,0 +1,13 @@
+name: Twitter, together!
+description: "Collaborate on tweets just like you collaborate on code, using pull requests"
+inputs:
+  scheduled_tweet:
+    description: "The scheduled tweet"
+    required: true
+    default: "Sent from Twitter, together!"
+branding:
+  icon: cast
+  color: blue
+runs:
+  using: "node16"
+  main: "dist/index.js"
