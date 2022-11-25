@@ -29,19 +29,19 @@ jobs:
         id: set_matrix
         run: echo "matrix=${{steps.get_tweets.outputs.schedule}}" >> $GITHUB_OUTPUT # variable provided for next step by js lib
 
-  # tweet:
-  #   needs: scheduler
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     matrix:
-  #       tweet_file: ${{ fromJSON(needs.scheduler.outputs.matrix) }}
-  #   steps:
-  #     - name: Tweet
-  #       uses: twitter-together/action@v2
-  #       env:
-  #         TWEET_FILE: ${{ matrix.tweet_file }}
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #         TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
-  #         TWITTER_ACCESS_TOKEN_SECRET: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
-  #         TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
-  #         TWITTER_API_SECRET_KEY: ${{ secrets.TWITTER_API_SECRET_KEY }}
+  tweet:
+    needs: scheduler
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tweet_file: ${{ fromJSON(needs.scheduler.outputs.matrix) }}
+    steps:
+      - name: Tweet
+        uses: twitter-together/action@v2
+        env:
+          TWEET_FILE: ${{ matrix.tweet_file }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
+          TWITTER_ACCESS_TOKEN_SECRET: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
+          TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
+          TWITTER_API_SECRET_KEY: ${{ secrets.TWITTER_API_SECRET_KEY }}
