@@ -12,10 +12,19 @@ jobs:
   tweet:
     name: Tweet
     runs-on: ubuntu-latest
+    container:
+      image: node:16-alpine
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - name: checkout main
         uses: actions/checkout@v3
+      # - name: install calcurse
+      #   run: apk add calcurse yq
+      - name: set schedule
+        id: set_schedule
+        uses: ./.github/actions/tweeter
+      - name: add schedule to env
+        run: echo "${{steps.set_schedule.outputs.schedule}}" >> $GITHUB_ENV # variable provided for next step by js lib
       - name: Tweet
         uses: twitter-together/action@v2
         env:
