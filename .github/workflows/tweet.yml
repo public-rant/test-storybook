@@ -24,7 +24,7 @@ jobs:
         id: set_schedule
         uses: ./.github/actions/tweeter
       - name: add schedule to env
-        run: echo "${{steps.set_schedule.outputs.schedule}}" >> $GITHUB_ENV # variable provided for next step by js lib
+        run: echo "${{steps.set_schedule.outputs}}" >> $GITHUB_ENV # variable provided for next step by js lib
       - name: Tweet
         uses: twitter-together/action@v2
         env:
