@@ -20,4 +20,4 @@ days=$1
   # --format-event $format 
 # | yq -o json '[.[][]]' \
 # | jq -c 'map({ config: ., project: . }) | tostring') #>> $GITHUB_OUTPUT
-echo "schedule=$(calcurse -D . -Q --days $days --format-event '  - %n\n' --format-recur-event '  - %n\n' | yq -o json| jq -c 'map({ config: ., project: . }) | tostring'))" >> $GITHUB_OUTPUT
+echo "schedule=$(calcurse -D . -Q --days $days --format-event '  - %n\n' --format-recur-event '  - %n\n' | yq -o json| jq -c '.[] | map({ config: ., project: . }) | tostring'))" >> $GITHUB_OUTPUT
