@@ -4,7 +4,6 @@ inputs:
   TWEET:
     description: "The scheduled tweet"
     required: true
-    default: "Sent from Twitter, together!"
 branding:
   icon: cast
   color: blue

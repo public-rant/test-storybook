@@ -4,8 +4,10 @@ description: 'Schedule your tweets'
 outputs:
   schedule:
     description: 'The files for the tweets that need to be tweeted'
+inputs:
+  days:
+    description: 'The length of the sprint used for scheduling purposes'
+    default: 1
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  # args:
-  #   - ${{ inputs.sprint_length }}
