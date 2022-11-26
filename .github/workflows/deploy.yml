@@ -1,10 +1,10 @@
 name: Github Pages Astro CI
 
 on:
-  # Trigger the workflow every time you push to the `main` branch
-  # Using a different branch name? Replace `main` with your branch’s name
+  # Trigger the workflow every time you push to the `development` branch
+  # Using a different branch name? Replace `development` with your branch’s name
   push:
-    branches: [ main ]
+    branches: [ development ]
   # Allows you to run this workflow manually from the Actions tab on GitHub.
   workflow_dispatch:
   
