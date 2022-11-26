@@ -27,7 +27,7 @@ jobs:
         uses: ./.github/actions/_tweeter
       - name: add schedule to env
         id: set_matrix
-        run: echo "matrix={\"include\":${{ jobs.get_tweets.outputs.schedule }}}" >> $GITHUB_OUTPUT
+        run: echo "matrix={\"include\":${{ steps.get_tweets.outputs.schedule }}}" >> $GITHUB_OUTPUT
 
 
   tweet:
