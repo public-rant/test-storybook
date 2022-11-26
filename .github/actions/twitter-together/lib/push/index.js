@@ -22,10 +22,10 @@ async function handlePush(state) {
   // ignore builds from branches other than the repository’s defaul branch
   const defaultBranch = payload.repository.default_branch;
   const branch = process.env.GITHUB_REF.substr("refs/heads/".length);
-  if (branch !== defaultBranch) {
-    toolkit.info(`"${branch}" is not the default branch`);
-    return;
-  }
+  // if (branch !== defaultBranch) {
+  //   toolkit.info(`"${branch}" is not the default branch`);
+  //   return;
+  // }
 
   // on request errors, log the requset options and error, then end process
   octokit.hook.error("request", (error, options) => {
