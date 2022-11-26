@@ -1,0 +1,48 @@
+on: [push, pull_request]
+name: Twitter, together!
+jobs:
+  preview:
+    name: Preview
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: twitter-together/action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  scheduler:
+    name: scheduler
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set_matrix.outputs.matrix }}
+    container:
+      image: node:16-alpine
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: checkout main
+        uses: actions/checkout@v3
+      # - name: install calcurse
+      #   run: apk add calcurse yq
+      - name: set schedule
+        id: get_tweets
+        uses: ./.github/actions/_tweeter
+      - name: add schedule to env
+        id: set_matrix
+        run: echo "matrix={\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}" >> $GITHUB_OUTPUT
+
+
+  tweet:
+    needs: scheduler
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJSON(needs.scheduler.outputs.matrix) }}
+    steps:
+      - name: Tweet
+        uses: ./.github/actions/twitter-together
+        with:
+          TWEET: ${{ matrix["config"] }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
+          TWITTER_ACCESS_TOKEN_SECRET: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
+          TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
+          TWITTER_API_SECRET_KEY: ${{ secrets.TWITTER_API_SECRET_KEY }}

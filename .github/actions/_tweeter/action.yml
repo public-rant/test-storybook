@@ -1,0 +1,11 @@
+# action.yml
+name: 'Tweeter'
+description: 'Schedule your tweets'
+outputs:
+  schedule:
+    description: 'The files for the tweets that need to be tweeted'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  # args:
+  #   - ${{ inputs.sprint_length }}
