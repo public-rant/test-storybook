@@ -25,17 +25,18 @@ async function main() {
   };
 
   // Allow for CLI invocation using `--file tweets/test.tweet`
-  if (process.argv.length > 2 && process.argv[2] === "--file") {
-    if (!process.argv[3]) throw new Error("No file specified for --file");
+  if (process.argv.length > 2 && process.argv[2] === "--file" ||process.env.INPUT_TWEET) {
+    const file = process.argv[3] || `notes/${process.env.INPUT_TWEET}` // todo configurable dir path
+    if (!file) throw new Error("No file specified for --file");
     const fileState = {
       ...state,
-      dir: resolve(process.argv[3], "..", ".."),
+      dir: resolve(file, "..", ".."),
     };
 
-    const payload = readFileSync(resolve(process.argv[3]), "utf8");
+    const payload = readFileSync(resolve(file), "utf8");
     const parsed = parseTweetFileContent(payload, fileState.dir);
     console.log("Parsed tweet:", parsed);
-    console.log(await tweet(fileState, parsed, basename(process.argv[3])));
+    console.log(await tweet(fileState, parsed, basename(file)));
     return;
   }
 

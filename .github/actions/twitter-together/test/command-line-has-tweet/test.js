@@ -23,18 +23,20 @@ nock("https://api.twitter.com")
   })
 
   .post("/2/tweets", (body) => {
-    tap.equal(body.text, "Hello, world!");
+    tap.equal(body.text, "the revolution will no be contextualized.");
     return true;
   })
   .reply(201, {
     data: {
       id: "0000000000000000001",
-      text: "Hello, world!",
+      text: "the revolution will no be contextualized.",
     },
   });
 
+process.env.INPUT_TWEET = '123'
+
 process.chdir(__dirname);
-process.argv = ["node", "lib/index.js", "--file", "tweets/hello-world.tweet"];
+process.argv = ["node", "lib/index.js", "--file"] //, "tweets/hello-world.tweet"];
 
 process.on("exit", (code) => {
   tap.equal(code, 0);
