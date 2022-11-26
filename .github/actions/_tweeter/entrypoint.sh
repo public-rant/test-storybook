@@ -1,6 +1,8 @@
 #!/bin/sh
 
-days=$1 # $GITHUB_INPUT TODO
+days=$1
+
+# $GITHUB_INPUT TODO
         # run: echo "matrix={\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}" >> $GITHUB_OUTPUT
 
 # schedule=$(calcurse -D . -Q --days 2 --format-recur-event '  %n\n' --format-apt '  %n' --format-todo '  %n\n' \
@@ -16,8 +18,6 @@ days=$1 # $GITHUB_INPUT TODO
   # --format-todo $format \
   # --format-recur-apt $format \
   # --format-event $format 
-echo "schedule="$(calcurse -D . -Q \
-  --days $days \
-  --format-event '  - %n\n' \
-| yq -o json '[.[][]]' \
-| jq -c 'map({ config: ., project: . }) | tostring') >> $GITHUB_OUTPUT
+# | yq -o json '[.[][]]' \
+# | jq -c 'map({ config: ., project: . }) | tostring') #>> $GITHUB_OUTPUT
+echo "schedule=$(calcurse -D . -Q --days $days --format-event '  - %n\n' --format-recur-event '  - %n\n' | yq -o json| jq -c 'map({ config: ., project: . }) | tostring'))"
