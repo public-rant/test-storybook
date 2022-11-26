@@ -41,7 +41,7 @@ jobs:
       - name: Tweet
         uses: ./.github/actions/twitter-together
         with:
-          scheduled_tweet: ${{ matrix.config }}
+          TWEET: ${{ matrix.config }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}

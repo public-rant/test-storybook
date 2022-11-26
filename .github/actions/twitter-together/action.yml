@@ -1,7 +1,7 @@
 name: Twitter, together!
 description: "Collaborate on tweets just like you collaborate on code, using pull requests"
 inputs:
-  scheduled_tweet:
+  TWEET:
     description: "The scheduled tweet"
     required: true
     default: "Sent from Twitter, together!"
