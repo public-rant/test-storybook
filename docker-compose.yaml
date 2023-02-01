@@ -1,0 +1,96 @@
+version: '3.9'
+services:
+  onlyplans:
+    image: ${DESKTOP_PLUGIN_IMAGE}
+  app:
+    entrypoint:
+      - sleep
+      - infinity
+    image: docker/dev-environments-default:stable-1
+    init: true
+    volumes:
+      - tmux:/usr/share/tmux
+      - /var/run/docker.sock:/var/run/docker.sock
+  restic:
+    image: restic/rest-server
+    ports:
+      - 8080:8080
+    command: rest-server --listen ':8080' --no-auth
+    volumes:
+      - restic:/tmp/restic
+  #
+  # rant:
+  #   build:
+  #     context: /Users/rant/Desktop/docker-extension/onlyplans/astro/rant.solutions
+  #   command: npm run dev:host
+  #   working_dir: /work
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - ./astro/rant.solutions:/work
+  nginx:
+    image: nginx
+    ports:
+      - 80:80
+    volumes:
+      - nginx:/usr/share/nginx
+    depends_on:
+      - onlyplans
+
+
+  db:
+    image: postgres:15.1-alpine
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=onlyplans
+      - PGDATA=/var/lib/postgresql/data/pgdata \
+    volumes:
+      - postgresql:/var/lib/postgresql/data
+  # ui:
+  #   image: node:18.0-buster-slim
+  #   command: npm run dev:host
+  #   working_dir: /work
+  #   ports:
+  #     - 5173:5173
+  #   volumes:
+  #     - node_modules:/work/node_modules
+  #     - calcurse:/usr/share/calcurse
+
+
+
+  editor:
+    image: editor
+    command: nvim
+    working_dir: /work
+    ports:
+      - 23231:23231
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      - tmux:/usr/share/tmux
+      - dotfiles:/root/.config/nvim
+      - onlyplans:/usr/share/onlyplans
+    depends_on:
+      - db
+
+volumes:
+  restic:
+  dotfiles:
+    external: true
+    #   - .venv:/work/.venv
+    #   - ./vm:/work/vm
+    #   - ./ui:/work/ui
+    #   - ./tests:/work/tests
+    #   - ./editor:/root/.config/nvim
+    #   - ./editor/sessions:/root/.local/share/nvim/sessions
+  postgresql:
+  node_modules:
+  tmux:
+  calcurse:
+  nginx:
+      # - ./astro/rant.solutions/nginx.conf:/etc/nginx/nginx.conf:ro
+  onlyplans:
+    external: true
