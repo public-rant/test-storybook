@@ -20,7 +20,7 @@ export const Page: React.VFC = () => {
       />
 
       <section>
-        <h3>Pages in Storybook</h3>
+        <h4>Pages in Storybook</h4>
         <p>
           We recommend building UIs with a{' '}
           <a href="https://componentdriven.org" target="_blank" rel="noopener noreferrer">
